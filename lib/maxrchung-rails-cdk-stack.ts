@@ -6,9 +6,10 @@ export class MaxrchungRailsCdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new s3.Bucket(this, 'maxrchung-rails', {
+    const bucket = new s3.Bucket(this, 'maxrchung-rails', {
       bucketName: 'maxrchung-rails'
     });
+    bucket.grantPublicAccess();
 
     // The code that defines your stack goes here
 
