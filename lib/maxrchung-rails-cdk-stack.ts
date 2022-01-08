@@ -3,6 +3,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as logs from '@aws-cdk/aws-logs';
 import * as ssm from '@aws-cdk/aws-ssm';
 
 export class MaxrchungRailsCdkStack extends cdk.Stack {
@@ -21,6 +22,11 @@ export class MaxrchungRailsCdkStack extends cdk.Stack {
       memoryMiB: '512',
     });
 
+    const logGroup = new logs.LogGroup(this, 'maxrchung-rails-log-group', {
+      logGroupName: 'maxrchung-rails-log-group',
+      retention: logs.RetentionDays.ONE_MONTH,
+    });
+
     const container = taskDefinition.addContainer('maxrchung-rails-container', {
       containerName: 'maxrchung-rails-container',
       image: ecs.ContainerImage.fromRegistry('maxrchung/maxrchung-rails'),
@@ -32,6 +38,10 @@ export class MaxrchungRailsCdkStack extends cdk.Stack {
         DATABASE_PASSWORD: ssm.StringParameter.valueForStringParameter(this, 'cloud-database-password'),
         SECRET_KEY_BASE: ssm.StringParameter.valueForStringParameter(this, 'maxrchung-rails-secret-key-base'),
       },
+      logging: ecs.LogDriver.awsLogs({
+        logGroup: logGroup,
+        streamPrefix: 'maxrchung-rails-log',
+      })
     });
 
     container.addPortMappings({ containerPort: 3000 });
