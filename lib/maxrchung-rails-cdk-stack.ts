@@ -34,8 +34,8 @@ export class MaxrchungRailsCdkStack extends cdk.Stack {
         AWS_ACCESS_KEY_ID: ssm.StringParameter.valueForStringParameter(this, 'maxrchung-aws-access-key-id'),
         AWS_DEFAULT_REGION: ssm.StringParameter.valueForStringParameter(this, 'maxrchung-aws-default-region'),
         AWS_SECRET_ACCESS_KEY: ssm.StringParameter.valueForStringParameter(this, 'maxrchung-aws-secret-access-key'),
-        DATABASE_HOST: ssm.StringParameter.valueForStringParameter(this, 'cloud-database-host'),
-        DATABASE_PASSWORD: ssm.StringParameter.valueForStringParameter(this, 'cloud-database-password'),
+        DATABASE_HOST: ssm.StringParameter.valueForStringParameter(this, 'maxrchung-rails-database-host'),
+        DATABASE_PASSWORD: ssm.StringParameter.valueForStringParameter(this, 'maxrchung-rails-database-password'),
         SECRET_KEY_BASE: ssm.StringParameter.valueForStringParameter(this, 'maxrchung-rails-secret-key-base'),
       },
       logging: ecs.LogDriver.awsLogs({
