@@ -13,14 +13,12 @@ export class MaxrchungRailsCdkStack extends cdk.Stack {
     })
 
     new cloudfront.Distribution(this, 'maxrchung-cloudfront', {
-      // Note: I'd like to set up a friendly domain just through here but this
-      // requires creating a certificate through ACM. I don't think it's worth
-      // the effort to go that far so I'm manually just adding a CNAME record
-      // in Route53 to map a s3.maxrchung.com domain to Cloudfront's distribution,
-      // something like d111111abcdef8.cloudfront.net. For more info:
-      // https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/CNAMEs.html
-      // domainNames: ["s3.maxrchung.com"]
       defaultBehavior: { origin: new origins.S3Origin(bucket) }
     })
+
+    // Note: It doesn't seem easy to create a nicer alias name. Cloudfront
+    // requires you to provide an SSL certificate, and I don't think I want to
+    // go that far. For now I'll just use a helper S3 function in
+    // maxrchung-next.
   }
 }
