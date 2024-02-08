@@ -18,7 +18,6 @@ export class MaxrchungRailsCdkStack extends cdk.Stack {
 
     // Note: It doesn't seem easy to create a nicer alias name. Cloudfront
     // requires you to provide an SSL certificate, and I don't think I want to
-    // go that far. For now I'll just use a helper S3 function in
-    // maxrchung-next.
+    // go that far. I'll look into redirects from Next.js side.
   }
 }
