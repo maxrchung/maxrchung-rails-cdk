@@ -12,8 +12,25 @@ export class MaxrchungRailsCdkStack extends cdk.Stack {
       bucketName: 'maxrchung-rails'
     })
 
+    // Need this for PDF downloader because downloading binary is different
+    // than pass through for images I think:
+    // https://github.com/diegomura/react-pdf/issues/1253#issuecomment-1026095758
+    const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, 'maxrchung-headers-policy', {
+      responseHeadersPolicyName: 'maxrchung-headers-policy',
+      corsBehavior: {
+        accessControlAllowCredentials: false,
+        accessControlAllowHeaders: ['*'],
+        accessControlAllowMethods: ['GET', 'POST'],
+        accessControlAllowOrigins: ['*'],
+        originOverride: true
+      }
+    })
+
     new cloudfront.Distribution(this, 'maxrchung-cloudfront', {
-      defaultBehavior: { origin: new origins.S3Origin(bucket) }
+      defaultBehavior: {
+        origin: new origins.S3Origin(bucket),
+        responseHeadersPolicy
+      }
     })
 
     // Note: It doesn't seem easy to create a nicer alias name. Cloudfront
